@@ -20,17 +20,17 @@ services:
     depends_on:
       - zookeeper
 
-#  db-postgres:
-#    image: postgres:15.3-alpine
-#    container_name: dcs-postgres
-#    restart: always
-#    environment:
-#      POSTGRES_PASSWORD: password
-#      POSTGRES_USER: postgres
-#    ports:
-#      - 5432:5432
-#    volumes:
-#      - ./data/postgres:/var/lib/postgresql/data
+  db-postgres:
+    image: postgres:15.3-alpine
+    container_name: db-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
 
 #networks:
 #  default:
