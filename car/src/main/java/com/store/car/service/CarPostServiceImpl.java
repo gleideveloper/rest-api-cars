@@ -1,8 +1,10 @@
 package com.store.car.service;
 
 import com.store.car.model.dto.CarPostDTO;
+import com.store.car.model.entity.CarPostEntity;
 import com.store.car.model.mapper.CarPostEntityMapper;
 import com.store.car.model.repository.CarPostRepository;
+import com.store.car.model.repository.OwnerPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,9 @@ public class CarPostServiceImpl implements CarPostService{
     @Autowired
     private CarPostEntityMapper carPostEntityMapper;
 
+    @Autowired
+    private OwnerPostRepository ownerPostRepository;
+
     @Override
     public void newPostDetails(CarPostDTO carPostDTO) {
         var carPostEntity = carPostEntityMapper.toCarPostEntity(carPostDTO);
@@ -34,19 +39,24 @@ public class CarPostServiceImpl implements CarPostService{
     }
     @Override
     public void changeCarSales(CarPostDTO carPostDTO, Long postId) {
-        var carPostEntity = carPostRepository.findById(postId)
+
+        var ownerPost = ownerPostRepository.findById(carPostDTO.getOwnerId())
                 .orElseThrow(NoSuchElementException::new);
+//                .orElseThrow(() -> new RuntimeException("Owner not found"));
 
-        carPostEntity.setModel(carPostDTO.getModel());
-        carPostEntity.setBrand(carPostDTO.getBrand());
-        carPostEntity.setPrice(carPostDTO.getPrice());
-        carPostEntity.setCity(carPostDTO.getCity());
-        carPostEntity.setDescription(carPostDTO.getDescription());
-        carPostEntity.setEngineVersion(carPostDTO.getEngineVersion());
-        carPostEntity.setCreatedDate(String.valueOf(new Date()));
-        carPostEntity.setContact(carPostDTO.getContact());
+        var updateCarPostEntity = CarPostEntity.builder()
+                .ownerPost(ownerPost)
+                .contact(ownerPost.getContactNumber())
+                .model(carPostDTO.getModel())
+                .brand(carPostDTO.getBrand())
+                .price(carPostDTO.getPrice())
+                .city(carPostDTO.getCity())
+                .description(carPostDTO.getDescription())
+                .engineVersion(carPostDTO.getEngineVersion())
+                .createdDate(String.valueOf(new Date()))
+                .build();
 
-        carPostRepository.save(carPostEntity);
+        carPostRepository.save(updateCarPostEntity);
     }
 
     @Override
