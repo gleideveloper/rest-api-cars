@@ -4,7 +4,9 @@ import com.store.car.model.dto.OwnerPostDTO;
 import com.store.car.model.mapper.OwnerPostEntityMapper;
 import com.store.car.model.repository.OwnerPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class OwnerPostServiceImpl implements OwnerPostService{
 
     @Autowired

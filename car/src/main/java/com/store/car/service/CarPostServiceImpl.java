@@ -27,7 +27,7 @@ public class CarPostServiceImpl implements CarPostService{
 
     @Override
     public void newPostDetails(CarPostDTO carPostDTO) {
-        var carPostEntity = carPostEntityMapper.toCarPostEntity(carPostDTO);
+        var carPostEntity = mapCarDTOtoEntity(carPostDTO);
         carPostRepository.save(carPostEntity);
     }
 
@@ -40,11 +40,29 @@ public class CarPostServiceImpl implements CarPostService{
     @Override
     public void changeCarSales(CarPostDTO carPostDTO, Long postId) {
 
-        var ownerPost = ownerPostRepository.findById(carPostDTO.getOwnerId())
+        var updateCarPostEntity = carPostRepository.findById(postId)
                 .orElseThrow(NoSuchElementException::new);
-//                .orElseThrow(() -> new RuntimeException("Owner not found"));
 
-        var updateCarPostEntity = CarPostEntity.builder()
+        updateCarPostEntity.setDescription(carPostDTO.getDescription());
+        updateCarPostEntity.setContact(carPostDTO.getContact());
+        updateCarPostEntity.setPrice(carPostDTO.getPrice());
+        updateCarPostEntity.setBrand(carPostDTO.getBrand());
+        updateCarPostEntity.setEngineVersion(carPostDTO.getEngineVersion());
+        updateCarPostEntity.setModel(carPostDTO.getModel());
+
+        carPostRepository.save(updateCarPostEntity);
+    }
+
+    @Override
+    public void removeCarPost(Long id) {
+        carPostRepository.deleteById(id);
+    }
+
+    private CarPostEntity mapCarDTOtoEntity(CarPostDTO carPostDTO){
+        var ownerPost = ownerPostRepository.findById(carPostDTO.getOwnerId())
+                .orElseThrow(() -> new RuntimeException("Owner not found"));
+
+        return CarPostEntity.builder()
                 .ownerPost(ownerPost)
                 .contact(ownerPost.getContactNumber())
                 .model(carPostDTO.getModel())
@@ -55,12 +73,5 @@ public class CarPostServiceImpl implements CarPostService{
                 .engineVersion(carPostDTO.getEngineVersion())
                 .createdDate(String.valueOf(new Date()))
                 .build();
-
-        carPostRepository.save(updateCarPostEntity);
-    }
-
-    @Override
-    public void removeCarPost(Long id) {
-        carPostRepository.deleteById(id);
     }
 }
