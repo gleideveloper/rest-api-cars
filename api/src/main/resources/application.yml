@@ -1,0 +1,17 @@
+# server
+server:
+  port: 8085
+
+# sprig
+spring:
+  application:
+    name: api
+  # kafka configs
+  kafka:
+    bootstrap-servers: localhost:9092
+
+# FeignClient
+feign:
+  client:
+    address:
+      url: http://localhost:8080
