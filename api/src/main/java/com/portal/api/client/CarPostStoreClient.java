@@ -11,6 +11,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * CLASSE OBSOLETA COM A IMPLEMENTAÇÃO DO FEIGN CLIENT
+ * {@link CarPostStoreFeignClient}
+ */
+
 @Component
 public class CarPostStoreClient {
     private static final String USER_STORE_SERVICE_URI = "http://localhost:8080/user";
