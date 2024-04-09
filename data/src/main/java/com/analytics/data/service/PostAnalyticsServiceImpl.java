@@ -8,7 +8,9 @@ import com.analytics.data.repository.BrandAnalyticsRepository;
 import com.analytics.data.repository.CarModelAnalyticsRepository;
 import com.analytics.data.repository.CarModelPriceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PostAnalyticsServiceImpl implements PostAnalyticsService {
 
     @Autowired
